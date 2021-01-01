@@ -32,7 +32,7 @@
         msg (str "CONTENT SCRIPT: document '" title "' contains " script-count " script tags.")]
     (log msg)
     (log "exist lfc5" exist-lfc5)
-    (log "exist tag" exist-tag)
+    (log "exist tag" (clj->js exist-tag))
     (post-message! background-port msg)))
 
 (defn connect-to-background-page! []
