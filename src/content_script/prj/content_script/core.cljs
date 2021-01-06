@@ -1,6 +1,6 @@
 (ns prj.content-script.core
   (:require-macros [cljs.core.async.macros :refer [go-loop]])
-  (:require [cljs.core.async :refer [<!]]
+  (:require [cljs.core.async :refer [<! timeout go]]
             [clojure.string :as string]
             [chromex.logging :refer-macros [log info warn error group group-end]]
             [chromex.protocols.chrome-port :refer [post-message!]]
@@ -39,7 +39,9 @@
   (let [background-port (runtime/connect)]
     (post-message! background-port "hello from CONTENT SCRIPT!")
     (run-message-loop! background-port)
-    (do-page-analysis! background-port)))
+    (go
+      (<! (timeout (* 10 1000)))
+      (do-page-analysis! background-port))))
 
 ; -- main entry point -------------------------------------------------------------------------------------------------------
 
